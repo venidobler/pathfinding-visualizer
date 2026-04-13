@@ -2,6 +2,7 @@
   import Node from './Node.svelte';
   // Importamos as funções matemáticas que acabamos de criar!
   import { executarBFS, pegarCaminhoMaisCurto } from '../algorithms/bfs';
+  import { executarAStar } from '../algorithms/astar';
 
   const NUM_ROWS = 20;
   const NUM_COLS = 40;
@@ -49,6 +50,8 @@
 
   let hasResults = $state(false);
 
+  let algoritmoSelecionado = $state('BFS');
+
   // --- LÓGICA DO MOUSE (Pincel) ---
   function toggleWall(row: number, col: number) {
     if (isAnimating) return; // Não deixa desenhar durante a animação
@@ -78,19 +81,28 @@
   }
 
   // --- LÓGICA DA ANIMAÇÃO (A Mágica!) ---
-  function visualizarBFS() {
+  function iniciarAlgoritmo() {
     if (isAnimating) return;
+    
+    // Se o usuário clicar de novo sem limpar o caminho, limpamos automaticamente
+    if (hasResults) limparCaminho();
+    
     isAnimating = true;
-
-    // Pegamos os nós reais do nosso tabuleiro
     const startNode = grid[START_NODE_ROW][START_NODE_COL];
     const endNode = grid[END_NODE_ROW][END_NODE_COL];
 
-    // O Computador "pensa" e resolve o labirinto em 1 milissegundo aqui:
-    const { nosVisitadosEmOrdem, nosAnteriores } = executarBFS(grid, startNode, endNode);
+    let resultado; // Vai guardar a resposta da matemática
+    
+    // NOVO: Lógica de decisão
+    if (algoritmoSelecionado === 'BFS') {
+      resultado = executarBFS(grid, startNode, endNode);
+    } else {
+      resultado = executarAStar(grid, startNode, endNode);
+    }
+
+    const { nosVisitadosEmOrdem, nosAnteriores } = resultado;
     const caminhoMaisCurto = pegarCaminhoMaisCurto(endNode, nosAnteriores);
 
-    // Passamos a resposta para a função que vai desenhar na tela devagarzinho
     animarAlgoritmo(nosVisitadosEmOrdem, caminhoMaisCurto);
   }
 
@@ -155,13 +167,22 @@
 
 <div class="flex flex-col items-center justify-center p-4">
   
-  <div class="flex gap-4 mb-6">
-    <button 
-      class="px-6 py-2 bg-blue-600 text-white font-semibold rounded shadow-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      onclick={visualizarBFS}
+  <div class="flex gap-4 mb-6 items-center">
+    <select 
+      class="px-4 py-2 border border-slate-300 rounded shadow-sm bg-white text-slate-700 font-medium focus:outline-none focus:border-blue-500 cursor-pointer disabled:opacity-50"
+      bind:value={algoritmoSelecionado}
       disabled={isAnimating}
     >
-      Iniciar Busca (BFS)
+      <option value="BFS">Busca em Largura (BFS)</option>
+      <option value="ASTAR">Algoritmo A* (A-Star)</option>
+    </select>
+
+    <button 
+      class="px-6 py-2 bg-blue-600 text-white font-semibold rounded shadow-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      onclick={iniciarAlgoritmo}
+      disabled={isAnimating}
+    >
+      Iniciar Busca
     </button>
     
     <button 
