@@ -47,6 +47,8 @@
   // Nova variável para bloquear o usuário de desenhar paredes ou clicar várias vezes enquanto a animação roda
   let isAnimating = $state(false);
 
+  let hasResults = $state(false);
+
   // --- LÓGICA DO MOUSE (Pincel) ---
   function toggleWall(row: number, col: number) {
     if (isAnimating) return; // Não deixa desenhar durante a animação
@@ -57,6 +59,11 @@
 
   function handleMouseDown(row: number, col: number) {
     if (isAnimating) return;
+
+    if (hasResults) {
+      limparCaminho();
+    }
+
     mouseIsPressed = true;
     toggleWall(row, col);
   }
@@ -118,6 +125,7 @@
         // Se for a última célula do caminho, libera a tela para uso novamente
         if (i === caminho.length - 1) {
           isAnimating = false;
+          hasResults = true;
         }
       }, 30 * i); // O caminho desenha um pouquinho mais devagar (30ms) para dar impacto visual
     }
@@ -126,7 +134,23 @@
   function limparTabuleiro() {
     if (isAnimating) return;
     grid = createGrid(); // Reseta tudo criando uma matriz novinha em folha
+    hasResults = false;
   }
+
+  function limparCaminho() {
+    if (isAnimating) return; // Não deixa limpar enquanto está animando
+    
+    // Percorremos toda a matriz
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        // Apagamos apenas o histórico de visita e o caminho final
+        grid[row][col].isVisited = false;
+        grid[row][col].isPath = false;
+      }
+    }
+    hasResults = false;
+  }
+
 </script>
 
 <div class="flex flex-col items-center justify-center p-4">
@@ -141,11 +165,19 @@
     </button>
     
     <button 
+      class="px-6 py-2 bg-yellow-500 text-white font-semibold rounded shadow-md hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      onclick={limparCaminho}
+      disabled={isAnimating}
+    >
+      Limpar Caminho
+    </button>
+    
+    <button 
       class="px-6 py-2 bg-slate-200 text-slate-800 font-semibold rounded shadow-md hover:bg-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       onclick={limparTabuleiro}
       disabled={isAnimating}
     >
-      Limpar Tabuleiro
+      Limpar Tabuleiro Completo
     </button>
   </div>
 
