@@ -1,5 +1,7 @@
 <script lang="ts">
   import Node from './Node.svelte';
+  // Importamos as funções matemáticas que acabamos de criar!
+  import { executarBFS, pegarCaminhoMaisCurto } from '../algorithms/bfs';
 
   const NUM_ROWS = 20;
   const NUM_COLS = 40;
@@ -40,39 +42,113 @@
   }
 
   let grid = $state(createGrid());
-  
-  // Estado para saber se o usuário está segurando o clique
   let mouseIsPressed = $state(false);
+  
+  // Nova variável para bloquear o usuário de desenhar paredes ou clicar várias vezes enquanto a animação roda
+  let isAnimating = $state(false);
 
-  // Função que realmente desenha/apaga a parede
+  // --- LÓGICA DO MOUSE (Pincel) ---
   function toggleWall(row: number, col: number) {
+    if (isAnimating) return; // Não deixa desenhar durante a animação
     const node = grid[row][col];
-    // Regra de ouro: Não podemos colocar parede em cima do Início ou Fim!
     if (node.isStart || node.isEnd) return;
-    
-    // Inverte o estado (se for parede vira vazio, se for vazio vira parede)
     grid[row][col].isWall = !grid[row][col].isWall;
   }
 
-  // Quando o usuário CLICA na célula
   function handleMouseDown(row: number, col: number) {
+    if (isAnimating) return;
     mouseIsPressed = true;
     toggleWall(row, col);
   }
 
-  // Quando o usuário PASSA O MOUSE por cima da célula
   function handleMouseEnter(row: number, col: number) {
-    if (!mouseIsPressed) return; // Só pinta se estiver segurando o clique
+    if (!mouseIsPressed || isAnimating) return;
     toggleWall(row, col);
   }
 
-  // Quando o usuário SOLTA o clique
   function handleMouseUp() {
     mouseIsPressed = false;
+  }
+
+  // --- LÓGICA DA ANIMAÇÃO (A Mágica!) ---
+  function visualizarBFS() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    // Pegamos os nós reais do nosso tabuleiro
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const endNode = grid[END_NODE_ROW][END_NODE_COL];
+
+    // O Computador "pensa" e resolve o labirinto em 1 milissegundo aqui:
+    const { nosVisitadosEmOrdem, nosAnteriores } = executarBFS(grid, startNode, endNode);
+    const caminhoMaisCurto = pegarCaminhoMaisCurto(endNode, nosAnteriores);
+
+    // Passamos a resposta para a função que vai desenhar na tela devagarzinho
+    animarAlgoritmo(nosVisitadosEmOrdem, caminhoMaisCurto);
+  }
+
+  function animarAlgoritmo(visitados: NodeType[], caminho: NodeType[]) {
+    for (let i = 0; i <= visitados.length; i++) {
+      // Quando terminamos de pintar todos os visitados, começamos a pintar o caminho final!
+      if (i === visitados.length) {
+        setTimeout(() => {
+          animarCaminho(caminho);
+        }, 10 * i); // Executa logo após a última célula visitada
+        return;
+      }
+
+      // O 'setTimeout' faz com que cada célula mude de cor 10 milissegundos DEPOIS da anterior
+      setTimeout(() => {
+        const no = visitados[i];
+        if (!no.isStart && !no.isEnd) {
+          grid[no.row][no.col].isVisited = true;
+        }
+      }, 10 * i);
+    }
+  }
+
+  function animarCaminho(caminho: NodeType[]) {
+    for (let i = 0; i < caminho.length; i++) {
+      setTimeout(() => {
+        const no = caminho[i];
+        if (!no.isStart && !no.isEnd) {
+          grid[no.row][no.col].isPath = true; // Pinta de amarelo
+        }
+        
+        // Se for a última célula do caminho, libera a tela para uso novamente
+        if (i === caminho.length - 1) {
+          isAnimating = false;
+        }
+      }, 30 * i); // O caminho desenha um pouquinho mais devagar (30ms) para dar impacto visual
+    }
+  }
+
+  function limparTabuleiro() {
+    if (isAnimating) return;
+    grid = createGrid(); // Reseta tudo criando uma matriz novinha em folha
   }
 </script>
 
 <div class="flex flex-col items-center justify-center p-4">
+  
+  <div class="flex gap-4 mb-6">
+    <button 
+      class="px-6 py-2 bg-blue-600 text-white font-semibold rounded shadow-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      onclick={visualizarBFS}
+      disabled={isAnimating}
+    >
+      Iniciar Busca (BFS)
+    </button>
+    
+    <button 
+      class="px-6 py-2 bg-slate-200 text-slate-800 font-semibold rounded shadow-md hover:bg-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      onclick={limparTabuleiro}
+      disabled={isAnimating}
+    >
+      Limpar Tabuleiro
+    </button>
+  </div>
+
   <div 
     class="grid gap-0 border border-slate-300 shadow-xl bg-slate-50"
     style="grid-template-columns: repeat({NUM_COLS}, minmax(0, 1fr));"
