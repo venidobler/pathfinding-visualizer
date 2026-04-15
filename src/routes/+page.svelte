@@ -20,10 +20,10 @@
   <div class="w-full max-w-5xl flex justify-between items-center px-4 mb-6">
     <div>
       <h1 class="text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2 transition-colors">
-        Visualizador de Algoritmos
+        Visualizador de Algoritmos (Svelte)
       </h1>
       <p class="text-slate-500 dark:text-slate-400 transition-colors">
-        Construído com SvelteKit e TailwindCSS
+        Reatividade nativa e performance compilada
       </p>
     </div>
     
