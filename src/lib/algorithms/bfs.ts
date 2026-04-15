@@ -1,6 +1,5 @@
 // src/lib/algorithms/bfs.ts
 
-// Copiamos o "molde" do Nó para o TypeScript não reclamar
 export type NodeType = {
   row: number;
   col: number;

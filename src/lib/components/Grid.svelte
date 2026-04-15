@@ -3,6 +3,7 @@
   // Importamos as funções matemáticas que acabamos de criar!
   import { executarBFS, pegarCaminhoMaisCurto } from '../algorithms/bfs';
   import { executarAStar } from '../algorithms/astar';
+  import { executarDFS } from '../algorithms/dfs';
 
   const NUM_ROWS = 20;
   const NUM_COLS = 40;
@@ -96,8 +97,10 @@
     // NOVO: Lógica de decisão
     if (algoritmoSelecionado === 'BFS') {
       resultado = executarBFS(grid, startNode, endNode);
-    } else {
+    } else if (algoritmoSelecionado === 'ASTAR') {
       resultado = executarAStar(grid, startNode, endNode);
+    } else if (algoritmoSelecionado === 'DFS') {
+      resultado = executarDFS(grid, startNode, endNode);
     }
 
     const { nosVisitadosEmOrdem, nosAnteriores } = resultado;
@@ -175,6 +178,7 @@
     >
       <option value="BFS">Busca em Largura (BFS)</option>
       <option value="ASTAR">Algoritmo A* (A-Star)</option>
+      <option value="DFS">Busca em Profundidade (DFS)</option>
     </select>
 
     <button 
