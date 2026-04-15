@@ -1,2 +1,5 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+/* Ativa o Modo Escuro por classe */
+@custom-variant dark (&:where(.dark, .dark *));

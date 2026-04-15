@@ -25,18 +25,18 @@
   }>();
 
   let bgClass = $derived(
-    isStart ? 'bg-green-500' :
-    isEnd ? 'bg-red-500' :
-    isWall ? 'bg-slate-800 scale-110 transition-transform' :
-    isPath ? 'bg-yellow-400' :
-    isVisited ? 'bg-blue-300' :
-    'bg-white'
+    isStart ? 'bg-green-500 border-green-600' :
+    isEnd ? 'bg-red-500 border-red-600' :
+    isWall ? 'bg-slate-800 dark:bg-slate-300 scale-110 transition-transform' : // Parede clara no escuro!
+    isPath ? 'bg-yellow-400 border-yellow-500' :
+    isVisited ? 'bg-blue-300 border-blue-400' :
+    'bg-white dark:bg-slate-800' // Fundo vazio escuro
   );
 </script>
 
 <div 
   id={`node-${row}-${col}`}
-  class={`w-6 h-6 border border-blue-100 cursor-pointer ${bgClass}`}
+  class={`w-6 h-6 border border-blue-100 dark:border-slate-700 cursor-pointer ${bgClass}`}
   onmousedown={() => onMouseDown(row, col)}
   onmouseenter={() => onMouseEnter(row, col)}
   onmouseup={onMouseUp}

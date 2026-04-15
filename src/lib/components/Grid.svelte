@@ -172,7 +172,7 @@
   
   <div class="flex gap-4 mb-6 items-center">
     <select 
-      class="px-4 py-2 border border-slate-300 rounded shadow-sm bg-white text-slate-700 font-medium focus:outline-none focus:border-blue-500 cursor-pointer disabled:opacity-50"
+      class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded shadow-sm bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium focus:outline-none focus:border-blue-500 cursor-pointer disabled:opacity-50 transition-colors"
       bind:value={algoritmoSelecionado}
       disabled={isAnimating}
     >
@@ -198,7 +198,7 @@
     </button>
     
     <button 
-      class="px-6 py-2 bg-slate-200 text-slate-800 font-semibold rounded shadow-md hover:bg-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-6 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded shadow-md hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       onclick={limparTabuleiro}
       disabled={isAnimating}
     >
@@ -207,7 +207,7 @@
   </div>
 
   <div 
-    class="grid gap-0 border border-slate-300 shadow-xl bg-slate-50"
+    class="grid gap-0 border border-slate-300 dark:border-slate-700 shadow-xl bg-slate-50 dark:bg-slate-900 transition-colors"
     style="grid-template-columns: repeat({NUM_COLS}, minmax(0, 1fr));"
     onmouseleave={handleMouseUp}
   >
@@ -229,30 +229,37 @@
     {/each}
   </div>
 
-  <div class="mt-8 flex flex-wrap justify-center gap-6 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+  <div class="mt-8 flex flex-wrap justify-center gap-6 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
+  
   <div class="flex items-center gap-2">
-    <div class="w-5 h-5 bg-green-500 border border-slate-200"></div>
-    <span class="text-sm font-medium text-slate-600">Início</span>
+    <div class="w-5 h-5 bg-green-500 border border-slate-200 dark:border-slate-700"></div>
+    <span class="text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors">Início</span>
   </div>
+  
   <div class="flex items-center gap-2">
-    <div class="w-5 h-5 bg-red-500 border border-slate-200"></div>
-    <span class="text-sm font-medium text-slate-600">Objetivo</span>
+    <div class="w-5 h-5 bg-red-500 border border-slate-200 dark:border-slate-700"></div>
+    <span class="text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors">Objetivo</span>
   </div>
+  
   <div class="flex items-center gap-2">
-    <div class="w-5 h-5 bg-slate-800 border border-slate-200"></div>
-    <span class="text-sm font-medium text-slate-600">Parede</span>
+    <div class="w-5 h-5 bg-slate-800 dark:bg-slate-300 border border-slate-200 dark:border-slate-700 transition-colors"></div>
+    <span class="text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors">Parede</span>
   </div>
+  
   <div class="flex items-center gap-2">
-    <div class="w-5 h-5 bg-blue-300 border border-slate-200"></div>
-    <span class="text-sm font-medium text-slate-600">Visitado</span>
+    <div class="w-5 h-5 bg-blue-300 border border-slate-200 dark:border-slate-700"></div>
+    <span class="text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors">Visitado</span>
   </div>
+  
   <div class="flex items-center gap-2">
-    <div class="w-5 h-5 bg-yellow-400 border border-slate-200"></div>
-    <span class="text-sm font-medium text-slate-600">Caminho Final</span>
+    <div class="w-5 h-5 bg-yellow-400 border border-slate-200 dark:border-slate-700"></div>
+    <span class="text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors">Caminho Final</span>
   </div>
+  
   <div class="flex items-center gap-2">
-    <div class="w-5 h-5 bg-white border border-slate-200"></div>
-    <span class="text-sm font-medium text-slate-600">Não Visitado</span>
+    <div class="w-5 h-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-colors"></div>
+    <span class="text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors">Não Visitado</span>
   </div>
+  
 </div>
 </div>
