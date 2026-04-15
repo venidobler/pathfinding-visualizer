@@ -14,7 +14,7 @@ Esta versão utiliza o **Svelte 5** com o novo sistema de **Runas** (`$state`, `
 - **Framework:** Svelte 5 (SvelteKit/Vite)
 - **Linguagem:** TypeScript
 - **Estilização:** Tailwind CSS v4
-- **Algoritmos:** BFS (Breadth-First Search) e A* (A-Star)
+- **Algoritmos:** BFS (Busca em Largura), A* (A-Star) e DFS (Busca em Profundidade).
 
 ## 🏁 Como rodar
 1. Clone o repositório
