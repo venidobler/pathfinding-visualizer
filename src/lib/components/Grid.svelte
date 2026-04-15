@@ -224,4 +224,31 @@
       {/each}
     {/each}
   </div>
+
+  <div class="mt-8 flex flex-wrap justify-center gap-6 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+  <div class="flex items-center gap-2">
+    <div class="w-5 h-5 bg-green-500 border border-slate-200"></div>
+    <span class="text-sm font-medium text-slate-600">Início</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-5 h-5 bg-red-500 border border-slate-200"></div>
+    <span class="text-sm font-medium text-slate-600">Objetivo</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-5 h-5 bg-slate-800 border border-slate-200"></div>
+    <span class="text-sm font-medium text-slate-600">Parede</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-5 h-5 bg-blue-300 border border-slate-200"></div>
+    <span class="text-sm font-medium text-slate-600">Visitado</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-5 h-5 bg-yellow-400 border border-slate-200"></div>
+    <span class="text-sm font-medium text-slate-600">Caminho Final</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-5 h-5 bg-white border border-slate-200"></div>
+    <span class="text-sm font-medium text-slate-600">Não Visitado</span>
+  </div>
+</div>
 </div>
